@@ -17,7 +17,7 @@ class VixCloudExtractor(BaseExtractor):
 
     async def version(self, site_url: str) -> str:
         """Get version of VixCloud Parent Site."""
-        base_url = f"{site_url}/richiedi-un-titolo"
+        base_url = f"{site_url}/request-a-title"
         response = await self._make_request(
             base_url,
             headers={
@@ -56,8 +56,6 @@ class VixCloudExtractor(BaseExtractor):
             script = soup.find("body").find("script").text
             token = re.search(r"'token':\s*'(\w+)'", script).group(1)
             expires = re.search(r"'expires':\s*'(\d+)'", script).group(1)
-            canPlayFHD = re.search(r"window\.canPlayFHD\s*=\s*(\w+)", script).group(1)
-            print(script,"A")
             server_url = re.search(r"url:\s*'([^']+)'", script).group(1)
             if "?b=1" in server_url:
                 final_url = f'{server_url}&token={token}&expires={expires}'
